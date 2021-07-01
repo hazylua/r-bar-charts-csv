@@ -63,7 +63,7 @@ plotted.m$value = as.numeric(readr::parse_number(plotted.m$value, locale = readr
 
 chart_name = df[lines[1], 1]
 filename = paste(chart_name, ".png", sep = '')
-ggplot(plotted.m, aes(x=Files, y=value, group=variable, fill=variable)) +
+plt = ggplot(plotted.m, aes(x=Files, y=value, group=variable, fill=variable)) +
   ggtitle("Filtro Gaussiano - Ruído Sal e Pimenta 50%") +
   xlab("Imagens") +
   ylab("SSIM") +
@@ -74,6 +74,8 @@ ggplot(plotted.m, aes(x=Files, y=value, group=variable, fill=variable)) +
     position = position_dodge(width = 0.8),
     key_glyph = "polygon3"
   ) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 5), labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
+  # scale_y_continuous(n.breaks = 10) +
   scale_fill_manual(name = "Variável", values = my_colors) +
   theme_light() +
   theme(
@@ -82,14 +84,20 @@ ggplot(plotted.m, aes(x=Files, y=value, group=variable, fill=variable)) +
     axis.title.y = element_text(family = "Calibri", size = 16, face = "bold", margin = margin(0, 10, 0, 10)),
     axis.text.y = element_text(family = "Calibri", size = 14, colour = "black", vjust = 0.5, margin = margin(0, 5, 0, 0)),
     axis.text.x = element_text(family = "Ubuntu Mono", size = 16, colour = "black",angle = 45, hjust = 1),
-    legend.title = element_text(family = "Calibri", colour = "black", size = 16, hjust = 0.5),
+    legend.title = element_text(family = "Calibri", colour = "black", size = 14, hjust = 0.5),
     legend.text = element_text(family = "Calibri", colour = "black", size = 12),
     legend.direction = "vertical",
     legend.position = "right",
+    axis.ticks = element_line(size = 0.5),
+    panel.grid.minor = element_line(size = 0.5),
+    panel.grid.major = element_line(size = 0.5),
+    panel.border = element_rect(size=1)
   )
 
 
-ggsave(f)
 plot(plt)
+ggsave(plt, path = './', filename = filename, units = 'px', width = 1800, height = 900, device = 'png', dpi = 110)
 # lines <- lines + 10
 dev.off()
+
+
