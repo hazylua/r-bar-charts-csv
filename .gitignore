@@ -1,2 +1,3 @@
 # RStudio workspace
 .R*
+.Rproj.user
