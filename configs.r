@@ -1,3 +1,15 @@
+library(tidyr)
+library(ggplot2)
+library(reshape2)
+library(readr)
+library(extrafont)
+library(gridExtra)
+library(grid)
+library("ggsci")
+library("viridis")
+
+loadfonts(quiet = T)
+
 round.choose <- function(x, roundTo, dir = 1) {
   if(dir == 1) {  ##ROUND UP
     x + (roundTo - x %% roundTo)
