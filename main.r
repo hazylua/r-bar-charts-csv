@@ -23,6 +23,59 @@ rmse <-
 rmse <-
   rmse %>% unite("with_on", "filter_name":"noise_intensity", remove = TRUE)
 
+compare_theme <- theme(
+  plot.title = element_text(
+    size = 16,
+    family = "Cambria",
+    face = "bold",
+    hjust = 0.5,
+  ),
+  axis.title.x = element_text(
+    family = "Calibri",
+    size = 16,
+    face = "bold",
+    margin = margin(10, 0, 10, 0)
+  ),
+  axis.title.y = element_text(
+    family = "Calibri",
+    size = 16,
+    face = "bold",
+    margin = margin(0, 10, 0, 10)
+  ),
+  axis.text.y = element_text(
+    family = "Calibri",
+    size = 14,
+    colour = "black",
+    vjust = 0.5,
+    margin = margin(0, 5, 0, 0)
+  ),
+  axis.text.x = element_text(
+    family = "Calibri",
+    size = 14,
+    colour = "black",
+    margin = margin(5, 0, 5, 0)
+  ),
+  legend.title = element_text(
+    family = "Calibri",
+    colour = "black",
+    face = "bold",
+    size = 14,
+    hjust = 0.5
+  ),
+  legend.text = element_text(
+    family = "Calibri",
+    colour = "black",
+    size = 12
+  ),
+  legend.position = c(1, 1),
+  legend.justification = c(1.1, 1.3),
+  legend.background = element_rect(fill=my_colors[2], linetype="solid", size=0.5, colour = my_colors[10]),
+  axis.ticks = element_line(size = 0.5),
+  panel.grid.minor = element_line(size = 0.5),
+  panel.grid.major = element_line(size = 0.5),
+  panel.border = element_rect(size = 1),
+)
+
 # File names as categories
 ssim_category <- paste("ssim_", colnames(ssim)[7], sep = '')
 rmse_category <- paste("rmse_", colnames(ssim)[7], sep = '')
