@@ -1,14 +1,3 @@
-library(tidyr)
-library(ggplot2)
-library(reshape2)
-library(readr)
-library(extrafont)
-library(gridExtra)
-library("ggsci")
-library("viridis")
-
-loadfonts(quiet = T)
-
 ssim <-
   read.csv(file = './ssim.csv',
            sep = ';',
@@ -81,13 +70,14 @@ ssim_category <- paste("ssim_", colnames(ssim)[7], sep = '')
 rmse_category <- paste("rmse_", colnames(ssim)[7], sep = '')
 
 # Column
-column <- c(5)
+column <- c(6)
 
 # Lines
 lines = c(1:10)
-lines <- lines + 110
+lines <- lines + 130
 
 a = round.choose(lines[1], roundTo = 10, 0) / 10
+a = a + 1
 
 to_plot_ssim = data.frame(
   "File" = ssim_category,
@@ -126,7 +116,17 @@ to_plot_ssim.m$value = as.numeric(readr::parse_number(to_plot_ssim.m$value, loca
 to_plot_rmse.m$value = as.numeric(readr::parse_number(to_plot_rmse.m$value, locale = readr::locale(decimal_mark = ",")))
 
 chart_name = ssim[lines[1], 1]
-filename = paste(chart_name, "_ssim_to_rmse.png", sep = '')
+
+ssim_name = as.character(to_plot_ssim.m[1, 1])
+# get just the image file name
+img_name = substr(ssim_name, 6, nchar(ssim_name))
+ssim_name = substr(ssim_name, 1, nchar(ssim_name)-4)
+
+rmse_name = as.character(to_plot_rmse.m[1, 1])
+rmse_name = substr(rmse_name, 1, nchar(rmse_name)-4)
+
+filename_ssim = paste(chart_name, "_", ssim_name, ".png", sep = '')
+filename_rmse = paste(chart_name, "_", rmse_name, ".png", sep = '')
 
 ##
 max_ssim = signif.ceiling(max(to_plot_ssim.m[, 3]), 1)
@@ -142,71 +142,65 @@ min_rmse = min(to_plot_rmse.m[, 3])
 min_factor = floor(log10(min_rmse))
 min_rmse = round.choose(min_rmse, 5 * 10 ^ (min_factor - 1), 0)
 
-
-
+# ssim_plot_title = paste(plot_names[a] " - Na imagem \"", img_name, "\"", sep = '')
 plt1 = ggplot(to_plot_ssim.m,
-              aes(x = variable, y = value, group = File)) +
-  ggtitle(plot_names[i]) +
+              aes(x = variable, y = value, group = File, fill = File)) +
+  ggtitle(element_blank()) +
   xlab("Variáveis") +
   ylab("SSIM") +
-  geom_line(colour = "black",
-            key_glyph = "polygon3") +
+  geom_line(color = my_colors[10],
+            key_glyph = "polygon3",
+            size = 1) +
+  geom_point(color = my_colors[10]) +
   scale_y_continuous(
     limits = c(min_ssim, max_ssim),
     breaks = seq(min_ssim,  max_ssim, length.out = 5),
   ) +
-  scale_fill_manual(name = "Variável",
+  scale_fill_manual(name = "Imagem",
                     values = my_colors) +
   theme_light() +
-  theme(
-    plot.title = element_text(size=16, family = "Cambria", face = "bold", hjust = 0.5, margin = margin(20, 0, 20, 0)),
-    axis.title.x = element_text(family = "Calibri", size = 12, face = "bold", margin = margin(10, 0, 10, 0)),
-    axis.title.y = element_text(family = "Calibri", size = 12, face = "bold", margin = margin(0, 10, 0, 10)),
-    axis.text.y = element_text(family = "Calibri", size = 10, colour = "black", vjust = 0.5, margin = margin(0, 5, 0, 0)),
-    axis.text.x = element_text(family = "Calibri", size = 10, colour = "black", margin = margin(5, 0, 5, 0)),
-    legend.title = element_text(family = "Calibri", colour = "black", size = 12, hjust = 0.5),
-    legend.text = element_text(family = "Calibri", colour = "black", size = 10),
-    legend.direction = "vertical",
-    legend.position = "right",
-    axis.ticks = element_line(size = 0.5),
-    panel.grid.minor = element_line(size = 0.5),
-    panel.grid.major = element_line(size = 0.5),
-    panel.border = element_rect(size=1)
-  )
+  compare_theme
 
 plot(plt1)
 
 plt2 = ggplot(to_plot_rmse.m,
-              aes(x = variable, y = value, group = File)) +
-  ggtitle(plot_names[i]) +
+              aes(x = variable, y = value, group = File, fill = File)) +
+  ggtitle(element_blank()) +
   xlab("Variáveis") +
   ylab("RMSE") +
-  geom_line(colour = "black",
-            key_glyph = "polygon3") +
+  geom_line(color = my_colors[10],
+            key_glyph = "polygon3",
+            size = 1) +
+  geom_point(color = my_colors[10],
+             size = 2) +
   scale_y_continuous(
     limits = c(min_rmse, max_rmse),
     breaks = seq(min_rmse,  max_rmse, length.out = 6),
   ) +
-  scale_fill_manual(name = "Variável",
+  scale_fill_manual(name = "Imagem",
                     values = my_colors) +
   theme_light() +
-  theme(
-    plot.title = element_text(size=16, family = "Cambria", face = "bold", hjust = 0.5, margin = margin(20, 0, 20, 0)),
-    axis.title.x = element_text(family = "Calibri", size = 12, face = "bold", margin = margin(10, 0, 10, 0)),
-    axis.title.y = element_text(family = "Calibri", size = 12, face = "bold", margin = margin(0, 10, 0, 10)),
-    axis.text.y = element_text(family = "Calibri", size = 12, colour = "black", vjust = 0.5, margin = margin(0, 5, 0, 0)),
-    axis.text.x = element_text(family = "Calibri", size = 12, colour = "black", margin = margin(5, 0, 5, 0)),
-    legend.title = element_text(family = "Calibri", colour = "black", size = 12, hjust = 0.5),
-    legend.text = element_text(family = "Calibri", colour = "black", size = 10),
-    legend.direction = "vertical",
-    legend.position = "right",
-    axis.ticks = element_line(size = 0.5),
-    panel.grid.minor = element_line(size = 0.5),
-    panel.grid.major = element_line(size = 0.5),
-    panel.border = element_rect(size=1)
-  )
+  compare_theme
 
 plot(plt2)
 
-grid.arrange(plt1, plt2)
-# ggsave(plt, path = './comparison', filename = filename, units = 'px', width = 1800, height = 900, device = 'png', dpi = 110)
+ggsave(
+  plt1,
+  path = './zoomed',
+  filename = filename_ssim,
+  units = 'px',
+  width = 1800,
+  height = 1000,
+  device = 'png',
+  dpi = 120
+)
+ggsave(
+  plt2,
+  path = './zoomed',
+  filename = filename_rmse,
+  units = 'px',
+  width = 1800,
+  height = 1000,
+  device = 'png',
+  dpi = 120
+)
