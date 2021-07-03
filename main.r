@@ -2,66 +2,11 @@ library(tidyr)
 library(ggplot2)
 library(reshape2)
 library(readr)
-
+library(extrafont)
 library("ggsci")
 library("viridis")
 
-library(extrafont)
-
 loadfonts(quiet = T)
-
-plot_names <- c(
-  "Filtro Gaussiano - 50% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro Gaussiano - 5% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro Gaussiano - 25% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro Gaussiano - Ruído Gaussiano com \U03C3 = 0,5",
-  "Filtro Gaussiano - Ruído Gaussiano com \U03C3 = 0,9",
-  
-  "Filtro da Mediana - 50% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro da Mediana - 5% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro da Mediana - 25% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro da Mediana - Ruído Gaussiano com \U03C3 = 0,5",
-  "Filtro da Mediana - Ruído Gaussiano com \U03C3 = 0,9",
-  
-  "Filtro do AC-mediana - 50% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro do AC-mediana - 5% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro do AC-mediana - 25% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro do AC-mediana - Ruído Gaussiano com \U03C3 = 0,5",
-  "Filtro do AC-mediana - Ruído Gaussiano com \U03C3 = 0,9",
-  
-  "Filtro do AC-média - 50% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro do AC-média - 5% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro do AC-média - 25% de Ruído \U22Sal e Pimenta\U22",
-  "Filtro do AC-média - Ruído Gaussiano com \U03C3 = 0,5",
-  "Filtro do AC-média - Ruído Gaussiano com \U03C3 = 0,9"
-)
-
-signif.ceiling <- function(x, n){
-  pow <- floor( log10( abs(x) ) ) + 1 - n
-  y <- ceiling(x / 10 ^ pow) * 10^pow
-  # handle the x = 0 case
-  y[x==0] <- 0
-  y
-}
-
-draw_key_polygon3 <- function(data, params, size) {
-  lwd <- min(data$size, min(size) / 4)
-  
-  grid::rectGrob(
-    width = grid::unit(0.8, "npc"),
-    height = grid::unit(0.8, "npc"),
-    gp = grid::gpar(
-      col = data$colour,
-      fill = alpha(data$fill, data$alpha),
-      lty = data$linetype,
-      lwd = lwd * .pt,
-      linejoin = "mitre"
-    ))
-}
-
-my_colors = c("#e1f5f3", "#b3e5fc", "#81d4fa", "#4fc3f7", "#29b6f6", "#03a9f4", "#039be5", "#0288d1", "#0277bd", "#01579b")
-
-
 
 df <- read.csv(file='./ssim.csv', sep = ';', fileEncoding = "UTF-8-BOM")
 df <- df %>% unite("with_on", "filter_name":"noise_intensity", remove = TRUE)
@@ -129,4 +74,3 @@ for(i in 1:20) {
 
   lines <- lines + 10
 }
-?format
