@@ -65,16 +65,16 @@ compare_theme <- theme(
   panel.border = element_rect(size = 1),
 )
 
-# File names as categories
-ssim_category <- paste("ssim_", colnames(ssim)[7], sep = '')
-rmse_category <- paste("rmse_", colnames(ssim)[7], sep = '')
-
 # Column
-column <- c(6)
+column <- c(4)
+
+# File names as categories
+ssim_category <- paste("ssim_", colnames(ssim)[column], sep = '')
+rmse_category <- paste("rmse_", colnames(rmse)[column], sep = '')
 
 # Lines
 lines = c(1:10)
-lines <- lines + 130
+lines <- lines + 100
 
 a = round.choose(lines[1], roundTo = 10, 0) / 10
 a = a + 1
@@ -129,7 +129,7 @@ filename_ssim = paste(chart_name, "_", ssim_name, ".png", sep = '')
 filename_rmse = paste(chart_name, "_", rmse_name, ".png", sep = '')
 
 ##
-max_ssim = signif.ceiling(max(to_plot_ssim.m[, 3]), 1)
+max_ssim = signif.ceiling(max(to_plot_ssim.m[, 3]), 1) + 0.1
 #
 min_ssim = round.choose(min(to_plot_ssim.m[, 3]), 0.1, 0)
 
@@ -144,7 +144,7 @@ min_rmse = round.choose(min_rmse, 5 * 10 ^ (min_factor - 1), 0)
 
 # ssim_plot_title = paste(plot_names[a] " - Na imagem \"", img_name, "\"", sep = '')
 plt1 = ggplot(to_plot_ssim.m,
-              aes(x = variable, y = value, group = File, fill = File)) +
+              aes(x = variable, y = value, group = File, fill = img_name)) +
   ggtitle(element_blank()) +
   xlab("Variáveis") +
   ylab("SSIM") +
@@ -164,7 +164,7 @@ plt1 = ggplot(to_plot_ssim.m,
 plot(plt1)
 
 plt2 = ggplot(to_plot_rmse.m,
-              aes(x = variable, y = value, group = File, fill = File)) +
+              aes(x = variable, y = value, group = File, fill = img_name)) +
   ggtitle(element_blank()) +
   xlab("Variáveis") +
   ylab("RMSE") +
