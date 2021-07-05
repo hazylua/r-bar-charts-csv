@@ -66,7 +66,7 @@ compare_theme <- theme(
 )
 
 # Column
-column <- c(4)
+column <- c(6)
 
 # File names as categories
 ssim_category <- paste("ssim_", colnames(ssim)[column], sep = '')
@@ -74,7 +74,7 @@ rmse_category <- paste("rmse_", colnames(rmse)[column], sep = '')
 
 # Lines
 lines = c(1:10)
-lines <- lines + 100
+lines <- lines + 130
 
 a = round.choose(lines[1], roundTo = 10, 0) / 10
 a = a + 1
