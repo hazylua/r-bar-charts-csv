@@ -11,7 +11,7 @@ loadfonts(quiet = T)
 df <- read.csv(file='./rmse.csv', sep = ';', fileEncoding = "UTF-8-BOM")
 df <- df %>% unite("with_on", "filter_name":"noise_intensity", remove = TRUE)
 
-path <- './rmse'
+path <- './data/rmse'
 
 # File names as categories
 categories <- colnames(df)[3:16]

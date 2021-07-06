@@ -13,7 +13,7 @@ loadfonts(quiet = T)
 df <- read.csv(file='./ssim.csv', sep = ';', fileEncoding = "UTF-8-BOM")
 df <- df %>% unite("with_on", "filter_name":"noise_intensity", remove = TRUE)
 
-path <- './ssim'
+path <- './data/ssim'
 
 # File names as categories
 categories <- colnames(df)[3:16]
