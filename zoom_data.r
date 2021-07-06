@@ -1,12 +1,12 @@
 ssim <-
-  read.csv(file = './ssim.csv',
+  read.csv(file = './data/ssim.csv',
            sep = ';',
            fileEncoding = "UTF-8-BOM")
 ssim <-
   ssim %>% unite("with_on", "filter_name":"noise_intensity", remove = TRUE)
 
 rmse <-
-  read.csv(file = './rmse.csv',
+  read.csv(file = './data/rmse.csv',
            sep = ';',
            fileEncoding = "UTF-8-BOM")
 rmse <-
